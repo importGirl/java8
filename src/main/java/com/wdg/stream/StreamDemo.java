@@ -1,13 +1,9 @@
 package com.wdg.stream;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import java.util.*;
+import java.util.function.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -126,8 +122,90 @@ public class StreamDemo {
             persons.add(person);
         }
         List<Object> collect =(persons.stream().limit(10).skip(3).collect(Collectors.toList()));
+        System.out.println("==========================================================================");
+
+        /**
+         * 方法:  sort()
+         * 作用:  排序
+         * 分析:
+         */
+
+        /**
+         * 方法: max()/min()/distinct()
+         * 作用: 最大值/最小值/去重
+         * 分析:
+         */
+
+        /**
+         * 方法: allMatch()/anyMatch()/noneMatch()
+         * 作用: 匹配规则: 全部匹配符合/任意匹配符合/全部匹配不符合
+         * 分析:
+         */
+        List<Integer> matchList = Arrays.asList(1, 2, 8, 3, 4, 5, 6, 7);
+        boolean isAllMatch = matchList.stream().allMatch(new Predicate<Integer>() {
+            @Override
+            public boolean test(Integer num) {
+                return num > 3;
+            }
+        });
+        System.out.println("AllMatch: " + isAllMatch);
+
+        boolean isAnyMatch = matchList.stream().anyMatch(new Predicate<Integer>() {
+            @Override
+            public boolean test(Integer integer) {
+                return integer > 7;
+            }
+        });
+        System.out.println("AnyMatch: " + isAnyMatch);
+        System.out.println("==========================================================================");
+
+        /**
+         * 方法:  Stream.generate()
+         * 作用:  自己生成流
+         * 分析:
+         */
+        // 生成10个随机数
+        Random seed = new Random();
+        Supplier<Integer> random = seed::nextInt;
+        Stream.generate(random).limit(10).forEach(System.out::println);
+        IntStream.generate(new IntSupplier() {
+            @Override
+            public int getAsInt() {
+                return (int)System.nanoTime()%100;
+            }
+        }).limit(10).forEach(System.out::println);
+        System.out.println("==========================================================================");
+
+        /**
+         * 方法: 自己实现Supplier
+         * 作用: 生成海量测试数据
+         * 分析:
+         */
+        Stream.generate(new PersonSupplier()).limit(10).forEach(p->System.out.println(p.getName()+","+p.getId()));
+        System.out.println("==========================================================================");
+
+        /**
+         * 方法: groupingBy/ partitioningBy
+         * 作用: 进行分组
+         * 分析:
+         */
+        Map<Long, List<Person>> personGroups = Stream.generate(new PersonSupplier()).limit(100).collect(Collectors.groupingBy(Person::getId));
+        Iterator<Map.Entry<Long, List<Person>>> it = personGroups.entrySet().iterator();
+        while(it.hasNext()){
+            Map.Entry<Long, List<Person>> p = it.next();
+            System.out.println("key: " + p.getKey()+ " value: " + p.getValue().size());
+        }
+
     }
 
+    private static class PersonSupplier implements Supplier<Person>{
+        private long index = 0;
+        private Random random = new Random();
+        @Override
+        public Person get() {
+            return new Person(index++,"stormTestUser"+index);
+        }
+    }
     static class Person{
         private static  Long id;
         private static  String name;
@@ -141,7 +219,17 @@ public class StreamDemo {
             return name;
         }
 
+        public Long getId() {
+            return id;
+        }
 
+        public static void setId(Long id) {
+            Person.id = id;
+        }
+
+        public static void setName(String name) {
+            Person.name = name;
+        }
     }
     public static void print(String text){
         Optional.ofNullable(text).ifPresent(s->System.out.print("当前str:"+s));
