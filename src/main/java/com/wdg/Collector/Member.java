@@ -19,6 +19,9 @@ public class Member {
         this.age = age;
     }
 
+    public Member() {
+    }
+
     public String getName() {
         return name;
     }
