@@ -1,5 +1,7 @@
 package com.wdg.FunctionalInterface;
 
+import java.util.stream.Stream;
+
 /**
  * @author wangdg
  * @Description:
@@ -11,5 +13,8 @@ public class CallMain {
         IMobile mobile = ()->System.out.println("打电话给妈妈!!!");
         Iphone iphone = new Iphone();
         iphone.callPerson(mobile);
+
+
+
     }
 }

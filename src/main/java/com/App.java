@@ -1,4 +1,4 @@
-package com.wdg;
+package com;
 
 /**
  * Hello world!

@@ -11,4 +11,5 @@ public class USBImpl implements IUsb {
         System.out.println("USB中间要有一横");
     }
 
+
 }

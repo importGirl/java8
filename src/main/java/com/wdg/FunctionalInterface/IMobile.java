@@ -9,4 +9,5 @@ package com.wdg.FunctionalInterface;
 public interface IMobile {
 
     void doCall();
+
 }

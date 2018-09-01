@@ -24,5 +24,6 @@ public class InterfaceDefaultMethod {
         System.out.println("===========================");
         new USB2Impl().standardUSB();
         new USB2Impl().isPort();
+        IUsb.transmitData();
     }
 }
