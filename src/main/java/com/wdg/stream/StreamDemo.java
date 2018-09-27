@@ -201,11 +201,13 @@ public class StreamDemo {
     private static class PersonSupplier implements Supplier<Person>{
         private long index = 0;
         private Random random = new Random();
+
         @Override
         public Person get() {
             return new Person(index++,"stormTestUser"+index);
         }
     }
+
     static class Person{
         private static  Long id;
         private static  String name;

@@ -3,8 +3,6 @@ package com.wdg.stream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author wangdg
@@ -33,7 +31,7 @@ public class Class {
 
     public Class(Integer classNo) {
         Random random = new Random();
-        this.students = Stream.generate(Student::new).limit(random.nextInt(50)).collect(Collectors.toList());
+//        this.students = Stream.generate(Student::new).limit(random.nextInt(50)).collect(Collectors.toList());
         this.classNo = classNo;
     }
 

@@ -39,7 +39,7 @@ public class CollectorDemo {
         System.out.println("根据名字分组,返回一个concurrentMap"+members.stream().collect(Collectors.groupingByConcurrent(m -> m.getName())).toString());
         System.out.println("连接集合的元素,逗号隔开: "+members.stream().map(member -> member.getName()).collect(Collectors.joining(",")).toString());
         System.out.println("连接集合元素: "+members.stream().map(m -> m.getName()).collect(Collectors.joining(",", "[", "]")).toString());
-//        System.out.println("mapping时,可以不使用stream的map: "+members.stream().collect(Collectors.mapping(m -> m.getName(), Collectors.joining(","))).toString());
+        System.out.println("mapping时,可以不使用stream的map: "+members.stream().collect(Collectors.mapping(m -> m.getName(), Collectors.joining(","))).toString());
         System.out.println("使集合不能被修改: "+Collections.unmodifiableCollection(members).add(new Member()));// UnsupportedOperationException
     }
 }

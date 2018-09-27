@@ -4,6 +4,7 @@ package com.wdg.share.stream;
 import org.junit.Test;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -68,7 +69,7 @@ public class StreamDemo {
         List<String> strList2 = strList.stream().map(String::toString).collect(Collectors.toList());
         String strJoin = strList.stream().collect(Collectors.joining(",")).toString();
         System.out.println(Arrays.toString(strArray));
-        System.out.println(strList2);
+//        System.out.println(strList2);
         System.out.println(strJoin);
 
     }
@@ -215,14 +216,13 @@ public class StreamDemo {
         // toCollection(): 转换成自定义容器
         ArrayList arrayList = students.stream().collect(Collectors.toCollection(ArrayList::new));
         System.out.println(students.stream().collect(Collectors.toMap(Student::getName, Student::getAge)));
-
-        // toMap(Function<? super T, ? extends K> keyMapper, Function<? super T, ? extends U> valueMapper,BinaryOperator<U> mergeFunction,Supplier<M> mapSupplier)
+        System.out.println(students.stream().collect(Collectors.toMap(Student::getSchool, Student::getName, (s, n) -> s + n, ConcurrentHashMap::new)).toString());
         // (key,value,重复key使用哪个key,返回的集合类型)
 //                .toString());
         // groupBy: 按学校分组
         System.out.println(students.stream().collect(Collectors.groupingBy(student -> student.getSchool())));
         System.out.println(students.stream().collect(Collectors.groupingBy(Student::getSchool, Collectors.groupingBy(Student::getClas))));// 多级分组
-//        System.out.println(students.stream().collect(Collectors.groupingBy(Student::getSchool, HashMap::new, Collectors.groupingBy(Student::getClas))).toString());
+        System.out.println(students.stream().collect(Collectors.groupingBy(Student::getSchool, HashMap::new, Collectors.groupingBy(Student::getClas))).toString());
         // joining: 连接元素
         System.out.println(students.stream().map(student -> student.getName()).collect(Collectors.joining(",", "[", "]")));
         // averagingDouble,collectingAndThen: 求平均值然后+1
@@ -233,9 +233,9 @@ public class StreamDemo {
         System.out.println(students.stream().collect(Collectors.summarizingInt(student -> student.getAge())));
         System.out.println(students.stream().collect(Collectors.summingInt(Student::getAge)));
         // mapping:  和Stream的map类似
-//        System.out.println(students.stream().collect(Collectors.mapping(Student::getName, Collectors.joining(","))));
+        System.out.println(students.stream().collect(Collectors.mapping(Student::getName, Collectors.joining(","))));
         // unmodifiableCollection : 使集合不能被修改
-//        System.out.println(Collections.unmodifiableCollection(students).add(new Student()));
+        System.out.println(Collections.unmodifiableCollection(students).add(new Student()));
         // partitioningBy: 对元素进行二分区操作时用到。 大于18和小于是18
         System.out.println(students.stream().collect(Collectors.partitioningBy(student -> student.getAge()>=18)).toString());
         System.out.println(students.stream().collect(Collectors.partitioningBy(student -> student.getAge() >= 18, Collectors.toList())));
@@ -243,7 +243,6 @@ public class StreamDemo {
         System.out.println(students.stream().collect(Collectors.reducing((s1, s2) -> s1.getAge() > s2.getAge() ? s1 : s2)).toString());
         System.out.println(students.stream().collect(Collectors.reducing(0,Student::getAge,(s1, s2) -> s1+s2))
                 .toString());
-
 
     }
 
